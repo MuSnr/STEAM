@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+.center-body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100vh;
+	/****** center box
+	width: 300px;
+	height: 300px;
+	border: solid 1px #aaa;
+	******/
+}
+body {
+	background-color: #ffffff;
+}
+body, html {
+  overflow: hidden;
+}
+
+.loader-triangle-2 {
+	position: relative;
+	width: 50px;
+	height: 100px;
+	transform-origin: center center;
+	animation: anm-tr2-rotate 3s 0.75s ease-in-out infinite;
+}
+.loader-triangle-2 .tra {
+	position: relative;
+	width: 0;
+	height: 0;
+	border-top: solid 50px #ff5722;
+	border-bottom: solid 25px transparent;
+	border-left: solid 25px transparent;
+	border-right: solid 25px transparent;
+}
+.loader-triangle-2 .tra:before,
+.loader-triangle-2 .tra:after {
+	content: "";
+	position: absolute;
+	left: -20px;
+	top: -47px;
+	width: 0;
+	height: 0;
+	border-top: solid 44px #fff;
+	border-bottom: solid 20px transparent;
+	border-left: solid 20px transparent;
+	border-right: solid 20px transparent;
+}
+.loader-triangle-2 .tra:after {
+	border-top: solid 44px #ff5722;
+	will-change: transform;
+	animation: anm-tr2-tra1 3s linear infinite;
+}
+.loader-triangle-2 .tra:last-child {
+	transform: rotate(180deg) translateY(50px);
+}
+.loader-triangle-2 .tra:last-child:after {
+	transform: scale(0);
+	animation: anm-tr2-tra2 3s linear infinite;
+}
+@keyframes anm-tr2-tra1 {
+	20%, 50% {
+		transform: scale(0);
+	}
+	70%,
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes anm-tr2-tra2 {
+	20%, 50% {
+		transform: scale(1);
+	}
+	70%,
+	100% {
+		transform: scale(0);
+	}
+}
+@keyframes anm-tr2-shadow {
+	10% {
+		opacity: 1;
+	}
+	20%,
+	50% {
+		opacity: 0;
+	}
+	60% {
+		opacity: 1;
+	}
+	70%,
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes anm-tr2-rotate {
+	20%, 50% {
+		transform: rotate(180deg);
+	}
+	70%,
+	100% {
+		transform: rotate(360deg);
+	}
+}
+  </style>
+</head>
+<div class="center-body">
+<div class="loader-triangle-2">
+    <div class="tra"></div>
+    <div class="tra"></div>
+</div>
+</div>
+  <script>
+    // JavaScript to handle any cleanup or additional processing if needed
+    setTimeout(function () {
+      google.script.run.withSuccessHandler(function () {
+        google.script.host.close();
+      }).closeFullScreenOverlay();
+    }, 6500); // Adjust the delay as needed
+  </script>
+</body>
+</html>

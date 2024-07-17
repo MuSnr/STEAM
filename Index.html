@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hnphs</title>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Loader styles */
+        .center-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .loader-triangle-2 {
+            position: relative;
+            width: 50px;
+            height: 100px;
+            transform-origin: center center;
+            animation: anm-tr2-rotate 3s 0.75s ease-in-out infinite;
+        }
+
+        .loader-triangle-2 .tra {
+            position: relative;
+            width: 0;
+            height: 0;
+            border-top: solid 50px #ff5722;
+            border-bottom: solid 25px transparent;
+            border-left: solid 25px transparent;
+            border-right: solid 25px transparent;
+        }
+
+        .loader-triangle-2 .tra:before,
+        .loader-triangle-2 .tra:after {
+            content: "";
+            position: absolute;
+            left: -20px;
+            top: -47px;
+            width: 0;
+            height: 0;
+            border-top: solid 44px #fff;
+            border-bottom: solid 20px transparent;
+            border-left: solid 20px transparent;
+            border-right: solid 20px transparent;
+        }
+
+        .loader-triangle-2 .tra:after {
+            border-top: solid 44px #ff5722;
+            will-change: transform;
+            animation: anm-tr2-tra1 3s linear infinite;
+        }
+
+        .loader-triangle-2 .tra:last-child {
+            transform: rotate(180deg) translateY(50px);
+        }
+
+        .loader-triangle-2 .tra:last-child:after {
+            transform: scale(0);
+            animation: anm-tr2-tra2 3s linear infinite;
+        }
+
+        @keyframes anm-tr2-tra1 {
+            20%, 50% {
+                transform: scale(0);
+            }
+
+            70%, 100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes anm-tr2-tra2 {
+            20%, 50% {
+                transform: scale(1);
+            }
+
+            70%, 100% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes anm-tr2-rotate {
+            20%, 50% {
+                transform: rotate(180deg);
+            }
+
+            70%, 100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Table styles */
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .tg td, .tg th {
+            border: 1px solid black;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .total-row {
+            background-color: #ffff00;
+        }
+
+        .odd-row {
+            background-color: #f2f2f2;
+        }
+
+        .even-row {
+            background-color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .tg td, .tg th {
+                font-size: 12px;
+                padding: 4px;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: white;">
+    <div id="lod" class="w3-modal">
+        <!-- Loader container -->
+        <div class="center-body">
+            <div class="loader-triangle-2">
+                <div class="tra"></div>
+                <div class="tra"></div>
+            </div>
+            <!-- Countdown timer -->
+            <div id="countdown" style="font-size: 48px; color: green;"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript countdown script -->
+    <script>
+        var countdownElement = document.getElementById("countdown");
+        var countdownValue = 9; // Start at 9
+        var countdownInterval; // Declare the countdown interval variable
+
+        function startCountdown() {
+            clearInterval(countdownInterval); // Clear any existing countdown interval
+            countdownValue = 9; // Set the countdown value to 9
+
+            countdownInterval = setInterval(function () {
+                countdownValue--;
+
+                if (countdownValue <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = ""; // Clear the countdown text
+                } else {
+                    countdownElement.textContent = countdownValue; // Update countdown text
+                }
+            }, 1000);
+        }
+
+        startCountdown(); // Start the countdown when the page loads
+    </script>
+
+    <?!= include('js'); ?>
+    <div class="w3-row w3-small" style="margin-top: 10px; margin-left: 25%;">
+        <form id="lab" onsubmit="event.preventDefault(); subm(this)">
+            <div class="w3-col s6" style="display: flex;">
+                <input type="text" name="name" id="studentNameInput" placeholder="Enter Student's name" class="w3-input w3-border w3-round-large w3-col s6" required list="nameSuggestions" ondblclick="changeName()" onchange="startCountdown()" style="margin-right: 10px;">
+                
+                <!-- Add margin-right to create space between input and submit -->
+                <input type="submit" class="w3-button w3-green w3-round-large custom-button" value="Submit" style="margin-right: 5px;">
+                
+                <!-- Add margin-left to create space between submit and print -->
+                <input type="button" name="btnprint" class="w3-button w3-blue w3-round-large custom-button" value="Print" onclick="Print('PrintDiv')" style="margin-left: 5px;">
+            </div>
+            <select id="classSelect" onchange="loadNames()" class="w3-input w3-border w3-round-large w3-col s3" style="margin-left: 10px;">
+                <option value="All">All</option>
+                <option value="Chandaria">Chandaria</option>
+                <option value="Riria">Riria</option>
+                <option value="Masiyiwa">Masiyiwa</option>
+            </select>
+            <datalist id="nameSuggestions"></datalist>
+        </form>
+    </div>
+    <div id='PrintDiv'>
+        <div id="rs" class="w3-margin-top" style="margin-left: 2%; margin-top: 2%;"></div>
+    </div>
+
+    <!-- School Motto -->
+    <div style="text-align: center; margin-top: 20px;">
+        <p><em>Schools of Innovators and Leaders</em></p>
+    </div>
+
+    <script>
+        var studentNames = {
+            "Chandaria": [
+                "Amanda Kimani",
+                "Anthony Karanja",
+                "Blessing Nyambura",
+                "Emmanuel Nguyai",
+                "Ethan Kamau",
+                "Jasmine Kariuki",
+                "Joshua Tsuma",
+                "Kayla Lukonye",
+                "Kent Nyange",
+                "Kindiki Mpuria",
+                "Lanease Maina",
+                "Luqman Jabali",
+                "Naima Mutunga",
+                "Neville Mwangi",
+                "Nicole Kamollo",
+                "Queen Gachoki",
+                "Quincy Kigo",
+                "Robbie Gichura",
+                "Ryan Gicho",
+                "Ryan Kimani",
+                "Samuel Kariba",
+                "Sifa Tonui",
+                "Stephanie Buba",
+                "Thea Theuri",
+                "Ummi Rading",
+                "Victoria Ngaruiya",
+                "Wanjugu Nginya",
+                "Manu Chandaria "
+            ],
+            "Riria": [
+                "Alexander Kariuki",
+                "Amy Chege",
+                "Angela Cherotich",
+                "Aram Kirima",
+                "Babra Karechio",
+                "Clarence Yegon",
+                "Ella Mwangi",
+                "Ethan Thuku",
+                "Faith Njenga",
+                "Favour Kamuhia",
+                "Fred Gakunu",
+                "James Kimani",
+                "Kunai Kariuki",
+                "Natalia Waichigo",
+                "Peter Mwaniki",
+                "Shantelle Muraya",
+                "Tamara Wandia",
+                "Thandiwe Wambui",
+                "Trayvon Kipkoech",
+                "Virginia Nganga",
+                "Viscount Gitumbu",
+                "Vyricia Mwaniki",
+                "Jeniffer Riria"
+            ],
+            "Masiyiwa": [
+                "Ariannah Wahu",
+                "Angeline Mugo",
+                "Adrian Letting",
+                "Alice Githinji",
+                "Alicia Taya",
+                "Braden Gitonga",
+                "Clement Njau",
+                "David Lamar",
+                "Dylan Francis",
+                "Gloria Maina",
+                "Ivan Gatene",
+                "Jamyl Bebetu",
+                "Kayshan Karobia",
+                "Kimberly Wambui",
+                "Kyle Sagana",
+                "Leko James",
+                "Lisa Mugure",
+                "Lisa Wambui",
+                "Martin Jayden",
+                "Salma Nyambura",
+                "Shammah Kendi",
+                "Sean Lubira",
+                "Stephanie Wambui",
+                "Tattiana Karuri",
+                "Trevor Mutuku",
+                "Trevor Mwangi",
+                "Victoria Wanjiru",
+                "Strive Masiyiwa"
+            ]
+        };
+
+        var averageValues = [
+            "Average",
+            "Chandaria",
+            "Riria",
+            "Masiyiwa"
+        ];
+
+        // Function to load names based on the selected class
+        function loadNames() {
+            var classSelect = document.getElementById("classSelect");
+            var selectedClass = classSelect.value;
+            var nameInput = document.getElementById("studentNameInput");
+            var nameSuggestions = document.getElementById("nameSuggestions");
+
+            // Clear existing options
+            nameSuggestions.innerHTML = "";
+
+            // Determine which names to include based on the selected class
+            var namesToInclude = [];
+            if (selectedClass === "All") {
+                // Include names from all classes
+                for (var className in studentNames) {
+                    namesToInclude = namesToInclude.concat(studentNames[className]);
+                }
+            } else {
+                namesToInclude = studentNames[selectedClass];
+            }
+
+            // Filter out duplicates
+            namesToInclude = namesToInclude.filter(function (name, index, self) {
+                return self.indexOf(name) === index;
+            });
+
+            // Add suggestions for names
+            namesToInclude.forEach(function (name) {
+                var option = document.createElement("option");
+                option.value = name;
+                nameSuggestions.appendChild(option);
+            });
+
+            // Add "averageValues" at the end
+            averageValues.forEach(function (name) {
+                var option = document.createElement("option");
+                option.value = name;
+                nameSuggestions.appendChild(option);
+            });
+
+            // Clear the input field
+            nameInput.value = "";
+        }
+
+        // Initial load of names when the page loads
+        loadNames();
+
+        function changeName() {
+            var nameInput = document.getElementById("studentNameInput");
+            nameInput.value = "";
+        }
+    </script>
+</body>
+</html>

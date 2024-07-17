@@ -1,0 +1,51 @@
+<script>
+    function subm(v){
+      document.getElementById('lod').style.display='block';
+      google.script.run.withFailureHandler(fail)
+                         .withSuccessHandler(pass)
+                         .sub(v);}                    
+      
+    function fail(v){
+    document.getElementById('lod').style.display='none';
+    document.getElementById("rs").innerHTML = v;}
+    function pass(v){
+    document.getElementById('lod').style.display='none';
+    document.getElementById("rs").innerHTML = v;
+    document.getElementById("lab").reset();}
+    </script>
+    
+    <script>
+       function Print(DivID) {
+       var iPrint = document.getElementById(DivID).innerHTML;
+       var docprint=window.open("","");
+       docprint.document.open();
+       docprint.document.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"');
+       docprint.document.write('<head><meta name="viewport" content="width=device-width,initial-scale=1.0">');
+       docprint.document.write('<title>MARKSHEET</title>');
+       docprint.document.write('<style type="text/css">@page {size:auto;margin:0.2em;}');
+       docprint.document.write('table,td{ border:1px solid grey;}</style>');
+       docprint.document.write('</head><center><body onLoad="self.print()">');
+       docprint.document.write(iPrint);
+       docprint.document.write('</body></center></html>');
+       docprint.document.close();
+       docprint.focus();
+       
+    }
+    </script>
+    <script>
+      function exportToPDF() {
+      var htmlOutput = HtmlService.createHtmlOutput(reportCardHtml);
+      var pdf = DriveApp.createFile(htmlOutput.getAs('application/pdf'));
+      return pdf.getUrl();
+    }
+    </script>
+    <script>
+      function sendEmailNotification(studentEmail, reportCardUrl) {
+      MailApp.sendEmail({
+        to: studentEmail,
+        subject: 'Your Report Card',
+        body: 'You can view your report card at the following link: ' + reportCardUrl
+      });
+    }
+    </script>
+    
